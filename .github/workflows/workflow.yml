@@ -1,0 +1,52 @@
+name: Pipeline - Grupo D (Linter)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validar-codigo:
+    name: Job 1 - Validar Código com Linter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Rodar o Linter (ESLint)
+        run: npx eslint . --ext .js
+
+      - name: Exibir mensagem secreta
+        run: echo "Mensagem Secreta => ${{ secrets.MENSAGEM_SECRETA }}"
+
+  simular-build:
+    name: Job 2 - Simular Build
+    runs-on: ubuntu-latest
+    needs: validar-codigo
+
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Simular Build do projeto
+        run: echo "Build concluído com sucesso!"
